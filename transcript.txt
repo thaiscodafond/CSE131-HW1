@@ -1,0 +1,125 @@
+First test : negat1.snek (neg 1)
+
+(base) thaisarchaud@Macarena adder % make test/negat1.run
+nasm -f macho64 test/negat1.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/negat1.run
+(base) thaisarchaud@Macarena adder % cat test/negat1.s   
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 1
+neg rax
+  ret
+(base) thaisarchaud@Macarena adder % ./test/negat1.run   
+-1
+
+Second test : negsub.snek (neg (sub1 1))
+
+(base) thaisarchaud@Macarena adder % make test/negsub.run
+cargo run -- test/negsub.snek test/negsub.s
+   Compiling adder v0.1.0 (/Users/thaisarchaud/Desktop/CSE131/adder)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.42s
+     Running `target/debug/adder test/negsub.snek test/negsub.s`
+nasm -f macho64 test/negsub.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/negsub.run
+(base) thaisarchaud@Macarena adder % cat test/negsub.s   
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 1
+sub rax, 1
+neg rax
+  ret
+(base) thaisarchaud@Macarena adder % ./test/negsub.run   
+0
+
+Third test : negadd (negate (add1 0))
+
+(base) thaisarchaud@Macarena adder % make test/negadd.run
+cargo run -- test/negadd.snek test/negadd.s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.04s
+     Running `target/debug/adder test/negadd.snek test/negadd.s`
+nasm -f macho64 test/negadd.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/negadd.run
+(base) thaisarchaud@Macarena adder % cat test/negadd.s   
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 0
+add rax, 1
+neg rax
+  ret
+(base) thaisarchaud@Macarena adder % ./test/negadd.run   
+-1
+
+Fourth test : negaddsub (negate (add1 (sub1 10)))
+
+(base) thaisarchaud@Macarena adder % make test/negaddsub.run
+cargo run -- test/negaddsub.snek test/negaddsub.s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.03s
+     Running `target/debug/adder test/negaddsub.snek test/negaddsub.s`
+nasm -f macho64 test/negaddsub.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/negaddsub.run
+(base) thaisarchaud@Macarena adder % cat test/negaddsub.s   
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 10
+sub rax, 1
+add rax, 1
+neg rax
+  ret
+(base) thaisarchaud@Macarena adder % ./test/negaddsub.run   
+-10
+
+Fifth test : 2neg (negate (negate 1))
+
+(base) thaisarchaud@Macarena adder % make test/2neg.run     
+cargo run -- test/2neg.snek test/2neg.s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/adder test/2neg.snek test/2neg.s`
+nasm -f macho64 test/2neg.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/2neg.run
+(base) thaisarchaud@Macarena adder % cat test/2neg.s     
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 1
+neg rax
+neg rax
+  ret
+(base) thaisarchaud@Macarena adder % ./test/2neg.run     
+1
+
+Sixth test : mixneg (add1 (negate (sub1 (negate 2))))
+
+(base) thaisarchaud@Macarena adder % make test/mixneg.run
+cargo run -- test/mixneg.snek test/mixneg.s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/adder test/mixneg.snek test/mixneg.s`
+nasm -f macho64 test/mixneg.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/mixneg.run
+(base) thaisarchaud@Macarena adder % cat test/mixneg.s   
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 2
+neg rax
+sub rax, 1
+neg rax
+add rax, 1
+  ret
+(base) thaisarchaud@Macarena adder % ./test/mixneg.run   
+4
